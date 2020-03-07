@@ -39,6 +39,12 @@ LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+
+INSERT OVERWRITE LOCAL DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+
+
 SELECT collect_list(UPPER(exploded))
 FROM tbl0 LATERAL VIEW explode(c5) exploded_table AS exploded
 GROUP BY c1;
