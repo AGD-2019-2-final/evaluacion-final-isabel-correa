@@ -2,16 +2,6 @@ import sys
 #
 # >>> Escriba el codigo del reducer a partir de este punto <<<
 #
-if __name__ == '__main__':
-
-    curkey = None
-    total = 0
-    ultiProp = None
-    v = None
-    ultVal = None
-
+if __name__ == "__main__":
     for line in sys.stdin:
-
-        valor, l = line.split()
-                           
-        sys.stdout.write("{},{}\n".format(l,v)
+        sys.stdout.write(line.split ( ',' )[1].replace ( '\n', '' ) + ',' + line.split ( ',' )[0] + '\n')
