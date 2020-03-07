@@ -33,5 +33,4 @@ g10= FOREACH g9 GENERATE g91,g94,g92;
 
 g11 = ORDER g10 BY $0, $1, $2;
 
-STORE g11 INTO 'output';
-fs -get output/ .
+STORE g11 INTO 'output'USING PigStorage (',');
