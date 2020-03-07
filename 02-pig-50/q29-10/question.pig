@@ -29,24 +29,40 @@
 -- Escriba el resultado a la carpeta `output` del directorio actual.
 -- 
 fs -rm -f -r output;
--- 
+u = LOAD 'data.csv' USING PigStorage(',') 
+    AS (id:int, 
+        firstname:CHARARRAY, 
+        surname:CHARARRAY, 
+        birthday:CHARARRAY, 
+        color:CHARARRAY, 
+        quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+date_data = FOREACH u generate birthday,
+ToString( ToDate(birthday,'yyyy-MM-dd'), 'MMM' ) as mes;
 
+date_data = FOREACH date_data GENERATE CONCAT((CHARARRAY)birthday,',',(CHARARRAY)(CASE     
+                              WHEN mes == 'Jan' THEN 'ene' 
+                              WHEN mes == 'Feb' THEN 'feb' 
+                              WHEN mes == 'Mar' THEN 'mar' 
+                              WHEN mes == 'May' THEN 'may' 
+                              WHEN mes == 'Apr' THEN 'abr' 
+                              WHEN mes == 'Jun' THEN 'jun'
+                              WHEN mes == 'Jul' THEN 'jul' 
+                              WHEN mes == 'Aug' THEN 'ago' 
+                              WHEN mes == 'Sep' THEN 'sep' 
+                              WHEN mes == 'Oct' THEN 'oct'
+                              WHEN mes == 'Nov' THEN 'nov' 
+                              WHEN mes == 'Dec' THEN 'dic' 
+                              END),',',
+                              (CHARARRAY)(CASE
+            WHEN GetMonth(ToDate(birthday,'yyyy-MM-dd')) < 10 THEN 
+            CONCAT('0',(chararray)GetMonth(ToDate(birthday,'yyyy-MM-dd')))
+            ELSE (chararray)GetMonth(ToDate(birthday,'yyyy-MM-dd'))
+            END),',',(chararray)GetMonth(ToDate(birthday,'yyyy-MM-dd')));
 
-u = LOAD 'data.csv' USING PigStorage(',')
-    AS (a1:INT,
-        a2:CHARARRAY,
-        a3:CHARARRAY,
-        a4: CHARARRAY,
-        a5: CHARARRAY);
-
-b1 = FOREACH u GENERATE ToString(ToDate(a4, 'YYYY-mm-DD'),'YYYY-mm-DD'), 
-LOWER(ToString(ToDate(a4,'yyyy-MM-dd', 'America/Bogota'),'MMM')), 
-ToString(ToDate(a4, 'YYYY-mm-DD'),'mm'),
-ToString(ToDate(a4, 'YYYY-mm-DD'),'m');
-
-
-STORE b1 INTO 'output' USING PigStorage (',');
-
+                              
+dump date_data;
+STORE date_data INTO 'output';
+fs -copyToLocal output output
