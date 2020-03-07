@@ -25,4 +25,4 @@ u = LOAD 'data.csv' USING PigStorage(',')
 b1 = FOREACH (GROUP (FOREACH u GENERATE GetYear(ToDate(a4, 'yyyy-mm-dd'))) by $0) GENERATE group, COUNT($1);
 
 
-STORE b1 INTO 'output';
+STORE b1 INTO 'output' USING PigStorage (',');
