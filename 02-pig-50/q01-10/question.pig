@@ -9,3 +9,12 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+!hadoop fs -put data.tsv
+lines = LOAD 'data.tsv' USING PigStorage('\t') AS (f1:CHARARRAY, f2:CHARARRAY, f3:INT);
+C= FOREACH lines GENERATE f1 AS f1;
+D = GROUP C BY f1;
+E =  FOREACH D GENERATE group, COUNT ($1); 
+!rm -rf output
+!mkdir output
+STORE E INTO 'output';
+fs -get output/ .

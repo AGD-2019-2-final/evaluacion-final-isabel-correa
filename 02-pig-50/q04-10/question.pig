@@ -27,3 +27,17 @@ fs -rm -f -r output;
 -- 
 --  >>> Escriba su respuesta a partir de este punto <<<
 -- 
+!hadoop fs -put truck_event_text_partition.csv
+u = LOAD 'truck_event_text_partition.csv' USING PigStorage(',')
+    AS (driverId:INT,
+        truckId:INT,
+        eventTime:CHARARRAY);
+
+a = ORDER u BY driverId, truckId, eventTime;
+b = LIMIT a 10;
+DUMP b
+!rm -rf output
+!mkdir output
+%%pig
+STORE b INTO 'output';
+fs -get output/ .

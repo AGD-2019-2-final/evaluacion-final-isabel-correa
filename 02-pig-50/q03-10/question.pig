@@ -8,3 +8,13 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+!hadoop fs -put data.tsv
+lines = LOAD 'data.tsv' USING PigStorage('\t') AS (f1:CHARARRAY, f2:CHARARRAY, f3:INT);
+C= FOREACH lines GENERATE f3 AS f3;
+letras = ORDER C BY f3; 
+S = LIMIT letras 5;
+DUMP S;
+!rm -rf output
+!mkdir output
+STORE S INTO 'output';
+fs -get output/ .
