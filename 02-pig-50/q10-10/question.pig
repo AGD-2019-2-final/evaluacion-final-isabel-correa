@@ -26,11 +26,6 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-%load_ext bigdata
-%timeout 300
-%pig_start
-!hadoop fs -put data.csv
-%%pig
 
 u = LOAD 'data.csv' USING PigStorage(',')
     AS (a1:INT,
@@ -45,4 +40,4 @@ b4 = GROUP b3 BY r1;
 b5 = FOREACH b4 GENERATE group, COUNT($1);
 b6 = ORDER b5 BY $1 DESC, $0;
 
-DUMP b6; 
+STORE b6 INTO 'output';
