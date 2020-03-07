@@ -30,24 +30,39 @@
 -- 
 fs -rm -f -r output;
 --
-
+u = LOAD 'data.csv' USING PigStorage(',') 
+    AS (id:int, 
+        firstname:CHARARRAY, 
+        surname:CHARARRAY, 
+        birthday:CHARARRAY, 
+        color:CHARARRAY, 
+        quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+date_data = FOREACH u generate birthday,
+            ToString( ToDate(birthday,'yyyy-MM-dd'), 'EEE' ) as dia;
 
-u = LOAD 'data.csv' USING PigStorage(',')
-    AS (a1:INT,
-        a2:CHARARRAY,
-        a3:CHARARRAY,
-        a4: CHARARRAY,
-        a5: CHARARRAY);
-
-b1 = FOREACH u GENERATE ToString(ToDate(a4, 'YYYY-mm-DD'),'YYYY-mm-DD'), 
-LOWER(ToString(ToDate(a4,'yyyy-MM-dd', 'America/Bogota'),'MMM')), 
-ToString(ToDate(a4, 'YYYY-mm-DD'),'mm'),
-ToString(ToDate(a4, 'YYYY-mm-DD'),'m'),
-ToString(ToDate(a4, 'yyyy-mm-dd', 'America/Bogota'),'EEE'),
-ToString(ToDate(a4, 'yyyy-mm-dd', 'America/Bogota'),'EEEEE');
-
-
-STORE b1 INTO 'output' USING PigStorage (',');
+date_data = FOREACH date_data GENERATE birthday,(CASE     
+                              WHEN dia == 'Mon' THEN 'lunes' 
+                              WHEN dia == 'Tue' THEN 'martes' 
+                              WHEN dia == 'Wed' THEN 'miércoles' 
+                              WHEN dia == 'Thu' THEN 'jueves' 
+                              WHEN dia == 'Fri' THEN 'viernes' 
+                              WHEN dia == 'Sat' THEN 'sábado'
+                              WHEN dia == 'Sun' THEN 'domingo' 
+                              END) as dia_semana;
+date_data = FOREACH date_data GENERATE birthday,
+(CASE
+            WHEN GetDay(ToDate(birthday,'yyyy-MM-dd')) < 10 THEN 
+            CONCAT('0',(chararray)GetDay(ToDate(birthday,'yyyy-MM-dd')))
+            ELSE (chararray)GetDay(ToDate(birthday,'yyyy-MM-dd'))
+            END) as casee,
+                              GetDay(ToDate(birthday,'yyyy-MM-dd')) as dia,
+                              SUBSTRING(dia_semana,0,3) as diaa,
+                              dia_semana;
+date_data = FOREACH date_data GENERATE CONCAT((CHARARRAY)birthday,',',(CHARARRAY)casee,',',(CHARARRAY)dia,',',(CHARARRAY)diaa,',',(CHARARRAY)dia_semana);   
+                    
+dump date_data;
+STORE date_data INTO 'output';
+fs -copyToLocal output output
