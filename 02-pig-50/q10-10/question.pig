@@ -33,4 +33,5 @@ b4 = GROUP b3 BY r1;
 b5 = FOREACH b4 GENERATE group, COUNT($1);
 b6 = ORDER b5 BY $1 DESC, $0;
 
-STORE b6 INTO 'output';
+STORE b6 INTO 'output' USING PigStorage (','); 
+
