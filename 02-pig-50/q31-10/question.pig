@@ -10,14 +10,7 @@
 -- 
 fs -rm -f -r output;
 -- 
-u = LOAD 'data.csv' USING PigStorage(',') 
-    AS (id:int, 
-        firstname:CHARARRAY, 
-        surname:CHARARRAY, 
-        birthday:CHARARRAY, 
-        color:CHARARRAY, 
-        quantity:INT);
---
+
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
 
@@ -29,11 +22,7 @@ u = LOAD 'data.csv' USING PigStorage(',')
         a4: CHARARRAY,
         a5: CHARARRAY);
 
-Y= FOREACH (GROUP (FOREACH u GENERATE GetYear(ToDate(a4, 'yyyy-mm-dd'))) by $0) GENERATE group, COUNT($1);
+b1 = FOREACH (GROUP (FOREACH u GENERATE GetYear(ToDate(a4, 'yyyy-mm-dd'))) by $0) GENERATE group, COUNT($1);
 
-DUMP b1;
-!rm -rf output
-!mkdir output
- %%pig
+
 STORE b1 INTO 'output';
-fs -get output/ .
