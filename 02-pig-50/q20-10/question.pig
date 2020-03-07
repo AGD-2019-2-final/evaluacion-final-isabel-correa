@@ -32,4 +32,4 @@ b1 =  FOREACH u GENERATE a2 AS a2, a5 AS a5;
 b2 = FILTER b1 BY (a5 !='b') ;
 
 
-STORE b2 INTO 'output';
+STORE b2 INTO 'output' USING PigStorage (',');
