@@ -30,24 +30,10 @@
 -- 
 fs -rm -f -r output;
 --
-u = LOAD 'data.csv' USING PigStorage(',') 
-    AS (id:int, 
-        firstname:CHARARRAY, 
-        surname:CHARARRAY, 
-        birthday:CHARARRAY, 
-        color:CHARARRAY, 
-        quantity:INT);
+
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-
-
-
-%load_ext bigdata
-%timeout 300
-%pig_start
-!hadoop fs -put data.csv
-%%pig
 
 u = LOAD 'data.csv' USING PigStorage(',')
     AS (a1:INT,
@@ -63,9 +49,5 @@ ToString(ToDate(a4, 'YYYY-mm-DD'),'m'),
 ToString(ToDate(a4, 'yyyy-mm-dd', 'America/Bogota'),'EEE'),
 ToString(ToDate(a4, 'yyyy-mm-dd', 'America/Bogota'),'EEEEE');
 
-DUMP b1;
-!rm -rf output
-!mkdir output
- %%pig
+
 STORE b1 INTO 'output';
-fs -get output/ .
