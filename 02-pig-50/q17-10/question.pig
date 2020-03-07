@@ -26,11 +26,6 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-%load_ext bigdata
-%timeout 300
-%pig_start
-!hadoop fs -put data.csv
-%%pig
 
 u = LOAD 'data.csv' USING PigStorage(',')
     AS (a1:INT,
@@ -41,9 +36,6 @@ u = LOAD 'data.csv' USING PigStorage(',')
 b1 =  FOREACH u GENERATE a2 AS a2, a5 AS a5;
 b2 = FILTER b1 BY a5 MATCHES 'black' OR a5 MATCHES'blue'; 
 
-DUMP b2;
-!rm -rf output
-!mkdir output
-%%pig
+
 STORE b2 INTO 'output';
-fs -get output/ .
+
