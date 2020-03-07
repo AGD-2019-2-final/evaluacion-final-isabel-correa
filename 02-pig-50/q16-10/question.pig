@@ -32,4 +32,4 @@ b1 =  FOREACH u GENERATE a2 AS a2, a5 AS a5;
 b2 = ORDER b1 BY a2;
 b3 = FILTER b1 BY ((a2 > 'K') AND (a2 < 'L')) OR (a5 =='blue')  ; 
 
-STORE b1 INTO 'output';
+STORE b1 INTO 'output' USING PigStorage (',');
