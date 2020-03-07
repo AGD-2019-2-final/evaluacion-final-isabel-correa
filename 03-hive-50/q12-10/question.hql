@@ -27,6 +27,11 @@ LOAD DATA LOCAL INPATH 'data.tsv' INTO TABLE t0;
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
 
+INSERT OVERWRITE LOCAL DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+
+
 SELECT b,a, COUNT(*)
 FROM (SELECT c2,a FROM t0 LATERAL VIEW explode(c3) et as a,v) t1
 LATERAL VIEW explode(c2) et as b
