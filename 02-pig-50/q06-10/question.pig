@@ -12,7 +12,7 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-!hadoop fs -put data.tsv
+
 u = LOAD 'data.tsv'
     AS (c1:CHARARRAY, c2:BAG{t:(p:CHARARRAY)}, c3:MAP[]);
 r = FOREACH u GENERATE FLATTEN(c3) AS (c3:CHARARRAY);
