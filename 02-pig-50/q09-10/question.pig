@@ -27,21 +27,14 @@
 -- 
 fs -rm -f -r output;
 --
-%load_ext bigdata
-%timeout 300
-%pig_start
-!hadoop fs -put data.csv
-%%pig
+
 u = LOAD 'data.csv' USING PigStorage(',')
     AS (a1:INT,
         a2:CHARARRAY,
         a3:CHARARRAY);
 b1 =  FOREACH u GENERATE a2 AS f1, a3 AS f2;
 b2 = FOREACH b1 GENERATE [f1,f2];
-DUMP b2;
-!rm -rf output
-!mkdir output
- %%pig
+
 STORE a5 INTO 'output';
-fs -get output/ .
+
 
