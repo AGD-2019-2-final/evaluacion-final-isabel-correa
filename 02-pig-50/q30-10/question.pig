@@ -41,3 +41,31 @@ u = LOAD 'data.csv' USING PigStorage(',')
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
 
+
+
+%load_ext bigdata
+%timeout 300
+%pig_start
+!hadoop fs -put data.csv
+%%pig
+
+u = LOAD 'data.csv' USING PigStorage(',')
+    AS (a1:INT,
+        a2:CHARARRAY,
+        a3:CHARARRAY,
+        a4: CHARARRAY,
+        a5: CHARARRAY);
+
+b1 = FOREACH u GENERATE ToString(ToDate(a4, 'YYYY-mm-DD'),'YYYY-mm-DD'), 
+LOWER(ToString(ToDate(a4,'yyyy-MM-dd', 'America/Bogota'),'MMM')), 
+ToString(ToDate(a4, 'YYYY-mm-DD'),'mm'),
+ToString(ToDate(a4, 'YYYY-mm-DD'),'m'),
+ToString(ToDate(a4, 'yyyy-mm-dd', 'America/Bogota'),'EEE'),
+ToString(ToDate(a4, 'yyyy-mm-dd', 'America/Bogota'),'EEEEE');
+
+DUMP b1;
+!rm -rf output
+!mkdir output
+ %%pig
+STORE b1 INTO 'output';
+fs -get output/ .

@@ -20,3 +20,20 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+
+
+u = LOAD 'data.csv' USING PigStorage(',')
+    AS (a1:INT,
+        a2:CHARARRAY,
+        a3:CHARARRAY,
+        a4: CHARARRAY,
+        a5: CHARARRAY);
+
+Y= FOREACH (GROUP (FOREACH u GENERATE GetYear(ToDate(a4, 'yyyy-mm-dd'))) by $0) GENERATE group, COUNT($1);
+
+DUMP b1;
+!rm -rf output
+!mkdir output
+ %%pig
+STORE b1 INTO 'output';
+fs -get output/ .

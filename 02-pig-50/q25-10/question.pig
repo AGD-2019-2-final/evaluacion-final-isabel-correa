@@ -26,3 +26,24 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+%load_ext bigdata
+%timeout 300
+%pig_start
+!hadoop fs -put data.csv
+%%pig
+
+u = LOAD 'data.csv' USING PigStorage(',')
+    AS (a1:INT,
+        a2:CHARARRAY,
+        a3:CHARARRAY,
+        a4: CHARARRAY,
+        a5: CHARARRAY);
+b1 =  FOREACH u GENERATE a2 AS a2, a5 AS a5;
+b2= FOREACH b1 GENERATE INDEXOF(a2, 'a');
+
+DUMP b2;
+!rm -rf output
+!mkdir output
+ %%pig
+STORE b2 INTO 'output';
+fs -get output/ .
