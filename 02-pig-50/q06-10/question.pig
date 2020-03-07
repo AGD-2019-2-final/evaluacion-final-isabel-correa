@@ -19,5 +19,4 @@ r = FOREACH u GENERATE FLATTEN(c3) AS (c3:CHARARRAY);
 grouped = GROUP r by c3;
 cuenta = FOREACH grouped GENERATE group, COUNT(r);
 
-STORE b INTO 'output';
-fs -get output/ .
+STORE b INTO 'output'USING PigStorage (',');
