@@ -25,3 +25,4 @@ if __name__ == '__main__':
             total = valor
 
     sys.stdout.write("{}\t{}\n".format(Clave_act, total))
+    
