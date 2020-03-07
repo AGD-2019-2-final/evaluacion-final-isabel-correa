@@ -11,7 +11,7 @@ fs -rm -f -r output;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-!hadoop fs -put data.tsv
+
 lines = LOAD 'data.tsv' USING PigStorage('\t')
     AS (f1:CHARARRAY, f2:BAG{t:(p:CHARARRAY)}, f3:CHARARRAY);
 
