@@ -38,11 +38,7 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-%load_ext bigdata
-%timeout 300
-%pig_start
-!hadoop fs -put data.csv
-%%pig
+
 
 u = LOAD 'data.csv' USING PigStorage(',')
     AS (a1:INT,
@@ -50,9 +46,5 @@ u = LOAD 'data.csv' USING PigStorage(',')
         a3:CHARARRAY);
 b1 =  FOREACH u GENERATE a3 AS f1, UPPER(a3) AS f2, a3 AS f3;
 b2 = ORDER b1 BY $1;
-DUMP b2;
-!rm -rf output
-!mkdir output
- %%pig
+
 STORE b2 INTO 'output';
-fs -get output/ .
