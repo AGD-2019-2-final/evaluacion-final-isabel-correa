@@ -11,3 +11,10 @@
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+DROP TABLE IF EXISTS T1;
+CREATE TABLE T1 (L STRING, F STRING, N INT)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+TBLPROPERTIES("skip.header.line.count"="0");
+
+LOAD DATA INPATH 'data.tsv' OVERWRITE INTO TABLE T1;
+SELECT L, COUNT(L) FROM T1 GROUP BY L;

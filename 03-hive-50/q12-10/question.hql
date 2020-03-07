@@ -27,4 +27,9 @@ LOAD DATA LOCAL INPATH 'data.tsv' INTO TABLE t0;
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
 
+SELECT b,a, COUNT(*)
+FROM (SELECT c2,a FROM t0 LATERAL VIEW explode(c3) et as a,v) t1
+LATERAL VIEW explode(c2) et as b
+GROUP BY b,a;
+
 

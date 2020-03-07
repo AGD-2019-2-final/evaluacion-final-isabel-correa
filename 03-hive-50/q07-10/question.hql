@@ -40,4 +40,8 @@ LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
 
+SELECT c2,collect_list(c1)
+FROM tbl0
+GROUP BY c2;
+
 

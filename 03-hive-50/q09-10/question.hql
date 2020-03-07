@@ -39,3 +39,6 @@ LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+SELECT tbl1.c1,tbl0.c2,tbl1.c4[tbl0.c2]
+FROM tbl1
+INNER JOIN tbl0 ON tbl0.c1=tbl1.c1;
