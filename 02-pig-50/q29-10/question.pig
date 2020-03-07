@@ -40,29 +40,28 @@ u = LOAD 'data.csv' USING PigStorage(',')
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
 date_data = FOREACH u generate birthday,
-ToString( ToDate(birthday,'yyyy-MM-dd'), 'MMM' ) as mes;
+            ToString( ToDate(birthday,'yyyy-MM-dd'), 'EEE' ) as dia;
 
-date_data = FOREACH date_data GENERATE CONCAT((CHARARRAY)birthday,',',(CHARARRAY)(CASE     
-                              WHEN mes == 'Jan' THEN 'ene' 
-                              WHEN mes == 'Feb' THEN 'feb' 
-                              WHEN mes == 'Mar' THEN 'mar' 
-                              WHEN mes == 'May' THEN 'may' 
-                              WHEN mes == 'Apr' THEN 'abr' 
-                              WHEN mes == 'Jun' THEN 'jun'
-                              WHEN mes == 'Jul' THEN 'jul' 
-                              WHEN mes == 'Aug' THEN 'ago' 
-                              WHEN mes == 'Sep' THEN 'sep' 
-                              WHEN mes == 'Oct' THEN 'oct'
-                              WHEN mes == 'Nov' THEN 'nov' 
-                              WHEN mes == 'Dec' THEN 'dic' 
-                              END),',',
-                              (CHARARRAY)(CASE
-            WHEN GetMonth(ToDate(birthday,'yyyy-MM-dd')) < 10 THEN 
-            CONCAT('0',(chararray)GetMonth(ToDate(birthday,'yyyy-MM-dd')))
-            ELSE (chararray)GetMonth(ToDate(birthday,'yyyy-MM-dd'))
-            END),',',(chararray)GetMonth(ToDate(birthday,'yyyy-MM-dd')));
-
-                              
+date_data = FOREACH date_data GENERATE birthday,(CASE     
+                              WHEN dia == 'Mon' THEN 'lunes' 
+                              WHEN dia == 'Tue' THEN 'martes' 
+                              WHEN dia == 'Wed' THEN 'miércoles' 
+                              WHEN dia == 'Thu' THEN 'jueves' 
+                              WHEN dia == 'Fri' THEN 'viernes' 
+                              WHEN dia == 'Sat' THEN 'sábado'
+                              WHEN dia == 'Sun' THEN 'domingo' 
+                              END) as dia_semana;
+date_data = FOREACH date_data GENERATE birthday,
+(CASE
+            WHEN GetDay(ToDate(birthday,'yyyy-MM-dd')) < 10 THEN 
+            CONCAT('0',(chararray)GetDay(ToDate(birthday,'yyyy-MM-dd')))
+            ELSE (chararray)GetDay(ToDate(birthday,'yyyy-MM-dd'))
+            END) as casee,
+                              GetDay(ToDate(birthday,'yyyy-MM-dd')) as dia,
+                              SUBSTRING(dia_semana,0,3) as diaa,
+                              dia_semana;
+date_data = FOREACH date_data GENERATE CONCAT((CHARARRAY)birthday,',',(CHARARRAY)casee,',',(CHARARRAY)dia,',',(CHARARRAY)diaa,',',(CHARARRAY)dia_semana);   
+                    
 dump date_data;
 STORE date_data INTO 'output';
 fs -copyToLocal output output
