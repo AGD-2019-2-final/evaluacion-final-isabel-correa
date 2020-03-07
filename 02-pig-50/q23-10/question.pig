@@ -34,4 +34,4 @@ b2 = FILTER b1 BY a5 MATCHES '.*a$*' OR a5 MATCHES '.*e$*' OR a5 MATCHES '.*i$*'
 OR a5 MATCHES '.*o$*' OR a5 MATCHES '.*u$*';
 
 
-STORE b2 INTO 'output';
+STORE b2 INTO 'output' USING PigStorage (',');
