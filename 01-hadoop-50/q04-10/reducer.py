@@ -4,24 +4,23 @@ import sys
 #
 if __name__ == '__main__':
 
-    Current_clave= None
-    Acumulado = 0
+    current_key = None
+    total = 0
 
     for line in sys.stdin:
 
-        clave, valor = line.split(",")
-        valor = int(valor)
+        key, value = line.split(",")
+        value = int( value)
 
-        if clave == Clave_act:
-        
-            Acumulado += valor
+        if key == current_key:
+
+            total += value
         else:
-         
-            if Current_clave is not None:
-           
-                sys.stdout.write("{},{}\n".format(Clave_act, Acumulado))
+            if current_key is not None:
+                sys.stdout.write("{},{}\n".format( current_key, total ) )
 
-            Current_clave= clave
-            Acumulado = valor
+            current_key = key
+            total = value
 
-    sys.stdout.write("{},{}\n".format(Clave_act, Acumulado))
+    sys.stdout.write("{},{}\n".format( current_key, total ) )
+    
