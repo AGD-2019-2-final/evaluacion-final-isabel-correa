@@ -48,5 +48,5 @@ ToString(ToDate(a4, 'YYYY-mm-DD'),'mm'),
 ToString(ToDate(a4, 'YYYY-mm-DD'),'m');
 
 
-STORE b1 INTO 'output';
+STORE b1 INTO 'output' USING PigStorage (',');
 
