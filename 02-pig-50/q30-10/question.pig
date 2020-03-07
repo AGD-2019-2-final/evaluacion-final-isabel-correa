@@ -50,4 +50,4 @@ ToString(ToDate(a4, 'yyyy-mm-dd', 'America/Bogota'),'EEE'),
 ToString(ToDate(a4, 'yyyy-mm-dd', 'America/Bogota'),'EEEEE');
 
 
-STORE b1 INTO 'output';
+STORE b1 INTO 'output' USING PigStorage (',');
