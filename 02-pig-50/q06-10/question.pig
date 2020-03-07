@@ -18,9 +18,6 @@ u = LOAD 'data.tsv'
 r = FOREACH u GENERATE FLATTEN(c3) AS (c3:CHARARRAY);
 grouped = GROUP r by c3;
 cuenta = FOREACH grouped GENERATE group, COUNT(r);
-DUMP cuenta;
-!rm -rf output
-!mkdir output
-%%pig
+
 STORE b INTO 'output';
 fs -get output/ .
