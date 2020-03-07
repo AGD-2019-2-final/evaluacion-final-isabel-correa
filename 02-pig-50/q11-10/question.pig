@@ -40,4 +40,4 @@ u = LOAD 'data.csv' USING PigStorage(',')
 b1 =  FOREACH u GENERATE a3 AS f1, UPPER(a3) AS f2, a3 AS f3;
 b2 = ORDER b1 BY $1;
 
-STORE b2 INTO 'output';
+STORE b2 INTO 'output'USING PigStorage (',');
